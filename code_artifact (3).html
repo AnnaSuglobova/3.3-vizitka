@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Финансовый Директор | Управленческий учет и 1С</title>
+    
+    <!-- Подключение шрифтов и иконок -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            /* Цветовая палитра - Премиальный Темный / Финтех стиль */
+            --bg-base: #0f111a;       /* Основной фон сайта */
+            --bg-surface: #181b28;    /* Фон карточек и панелей */
+            --bg-surface-elevated: #222636; /* Фон при наведении */
+            
+            --brand-primary: #3b82f6; /* Акцентный синий (доверие, технологии) */
+            --brand-primary-hover: #2563eb;
+            --brand-success: #10b981; /* Зеленый (рост, прибыль) */
+            --brand-warning: #f59e0b; /* Оранжевый (внимание) */
+            --brand-danger: #ef4444;  /* Красный (ошибки, убытки) */
+            
+            --text-high: #f8fafc;     /* Основной текст (белый) */
+            --text-medium: #94a3b8;   /* Второстепенный текст (серый) */
+            --text-low: #64748b;      /* Третичный текст */
+            
+            --border-subtle: rgba(255, 255, 255, 0.06);
+            --border-strong: rgba(255, 255, 255, 0.12);
+            
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            --shadow-glow: 0 0 30px rgba(59, 130, 246, 0.2);
+            
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-xl: 32px;
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-high);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Утилиты и Анимации */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .reveal-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--brand-primary);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: var(--transition);
+            background: transparent;
+        }
+
+        .navbar.scrolled {
+            background: rgba(15, 17, 26, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 15px 0;
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text-high);
+        }
+
+        .brand-logo i {
+            color: var(--brand-primary);
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; } /* Скрытие ссылок на мобилках */
+            .nav-links.mobile-actions { display: flex; gap: 15px; } /* Оставляем только иконки */
+        }
+
+        .nav-link {
+            color: var(--text-medium);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-link:hover {
+            color: var(--text-high);
+        }
+
+        /* Кнопки */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 28px;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-sm {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background-color: var(--brand-primary);
+            color: #fff;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--brand-primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text-high);
+            border: 1px solid var(--border-strong);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--bg-surface-elevated);
+            border-color: var(--text-medium);
+        }
+
+        .social-icon-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-surface);
+            color: var(--text-high);
+            border: 1px solid var(--border-subtle);
+            transition: var(--transition);
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+
+        .social-icon-btn.tg:hover { background: #229ED9; border-color: #229ED9; }
+        .social-icon-btn.wa:hover { background: #25D366; border-color: #25D366; }
+
+        .hero {
+            padding-top: 160px;
+            padding-bottom: 100px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Фоновый декор для Hero */
+        .hero-bg-glow {
+            position: absolute;
+            top: 10%;
+            right: 0;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 60%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin: 24px 0;
+            letter-spacing: -1px;
+        }
+
+        .hero-content h1 span {
+            color: var(--brand-primary);
+        }
+
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--text-medium);
+            margin-bottom: 40px;
+            max-width: 500px;
+            line-height: 1.7;
+        }
+
+        .hero-features {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 45px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-medium);
+        }
+
+        .feature-item i {
+            color: var(--brand-success);
+            background: rgba(16, 185, 129, 0.1);
+            padding: 5px;
+            border-radius: 50%;
+            font-size: 0.75rem;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        /* Блок с фото и плашками */
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hero-image-box {
+            position: relative;
+            width: 100%;
+            max-width: 440px;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            border: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .hero-image-box::before {
+            content: '';
+            display: block;
+            padding-top: 115%; /* Пропорции фото */
+        }
+
+        .hero-image-box img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+        }
+
+        /* Плавающие карточки статистики на Hero */
+        .floating-stat {
+            position: absolute;
+            background: rgba(24, 27, 40, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-strong);
+            padding: 15px 20px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: var(--shadow-md);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .stat-icon.blue { background: rgba(59, 130, 246, 0.15); color: var(--brand-primary); }
+        .stat-icon.green { background: rgba(16, 185, 129, 0.15); color: var(--brand-success); }
+
+        .stat-info { display: flex; flex-direction: column; }
+        .stat-val { font-weight: 700; font-size: 1.1rem; line-height: 1.2; }
+        .stat-desc { font-size: 0.75rem; color: var(--text-medium); }
+
+        /* Переместили виджеты вниз, чтобы не перекрывали лицо */
+        .stat-1 { top: auto; bottom: 40px; right: -30px; animation-delay: 0s; }
+        .stat-2 { top: auto; bottom: 160px; left: -40px; animation-delay: 3s; }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .section-padding { padding: 100px 0; }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+            max-width: 700px;
+            margin-inline: auto;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin: 15px 0 20px;
+            letter-spacing: -0.5px;
+        }
+
+        .section-desc { color: var(--text-medium); font-size: 1.1rem; }
+
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .problem-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 40px 30px;
+            transition: var(--transition);
+        }
+
+        .problem-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--border-strong);
+            background: var(--bg-surface-elevated);
+        }
+
+        .problem-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--brand-danger);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+        }
+
+        .problem-card h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 15px; }
+        .problem-card p { color: var(--text-medium); font-size: 0.95rem; line-height: 1.6; }
+
+        .methodology-section {
+            background-color: #0b0d14; /* Немного темнее для контраста */
+            border-top: 1px solid var(--border-subtle);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .carousel-wrapper {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .carousel-track {
+            display: flex;
+            width: 300%;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .slide {
+            width: 33.3333%;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            min-height: 480px;
+        }
+
+        .slide-content {
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-right: 1px solid var(--border-subtle);
+        }
+
+        .slide-step {
+            font-size: 0.85rem;
+            color: var(--brand-primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .slide h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 20px; line-height: 1.2; }
+        .slide p { color: var(--text-medium); font-size: 1.05rem; }
+
+        .slide-visual {
+            padding: 40px;
+            background: var(--bg-base);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* UI Элементы внутри слайдов */
+        .ui-mockup {
+            width: 100%;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-strong);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Слайд 1: Интеграция */
+        .integration-nodes { display: flex; flex-direction: column; gap: 15px; }
+        .node { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: var(--bg-base); border-radius: 8px; border: 1px solid var(--border-subtle); }
+        .node.error { border-left: 3px solid var(--brand-danger); }
+        .node.success { border-left: 3px solid var(--brand-success); background: rgba(16, 185, 129, 0.05); }
+
+        /* Слайд 2: Дашборд мини */
+        .mini-dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .metric-card { padding: 15px; background: var(--bg-base); border-radius: 8px; border: 1px solid var(--border-subtle); }
+        .metric-card.highlight { border-color: rgba(16, 185, 129, 0.4); }
+        .metric-label { font-size: 0.75rem; color: var(--text-medium); text-transform: uppercase; margin-bottom: 5px; }
+        .metric-val { font-size: 1.25rem; font-weight: 700; }
+
+        /* Управление каруселью */
+        .carousel-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .control-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-base);
+            border: 1px solid var(--border-strong);
+            color: var(--text-high);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .control-btn:hover {
+            background: var(--brand-primary);
+            border-color: var(--brand-primary);
+        }
+
+        .dashboard-demo-section {
+            background: var(--bg-base);
+            position: relative;
+        }
+
+        .dashboard-container {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-xl);
+            padding: 60px;
+            box-shadow: var(--shadow-lg);
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .demo-info h3 { font-size: 2rem; font-weight: 800; margin-bottom: 20px; line-height: 1.2; }
+        .demo-info p { color: var(--text-medium); margin-bottom: 30px; font-size: 1.05rem; }
+
+        .key-metrics {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .big-metric {
+            background: var(--bg-base);
+            padding: 20px 25px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .bm-label { color: var(--text-medium); font-size: 0.9rem; margin-bottom: 5px; font-weight: 500; }
+        .bm-value { 
+            font-size: 2.5rem; 
+            font-weight: 800; 
+            color: var(--brand-success);
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+        .bm-currency { font-size: 1.2rem; color: var(--text-medium); font-weight: 500; }
+
+        /* График SVG */
+        .chart-wrapper {
+            background: var(--bg-base);
+            border-radius: var(--radius-md);
+            padding: 30px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: var(--text-medium);
+        }
+
+        .chart-svg {
+            width: 100%;
+            height: 280px;
+            overflow: visible;
+        }
+
+        .grid-line { stroke: rgba(255, 255, 255, 0.05); stroke-width: 1; }
+        
+        .line-path {
+            stroke: var(--brand-primary);
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            filter: drop-shadow(0 6px 6px rgba(59, 130, 246, 0.3));
+        }
+
+        .area-path {
+            fill: url(#blueGradient);
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        .chart-point {
+            fill: var(--bg-surface);
+            stroke: var(--brand-primary);
+            stroke-width: 3;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Классы для триггера анимации (Intersection Observer) */
+        .animate-draw .line-path { animation: drawLine 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .animate-draw .area-path { opacity: 1; transition-delay: 1.5s; }
+        .animate-draw .chart-point { opacity: 1; }
+        .animate-draw .chart-point:nth-child(1) { transition-delay: 0.5s; }
+        .animate-draw .chart-point:nth-child(2) { transition-delay: 1.0s; }
+        .animate-draw .chart-point:nth-child(3) { transition-delay: 1.5s; }
+        .animate-draw .chart-point:nth-child(4) { transition-delay: 2.0s; fill: var(--brand-primary); }
+
+        @keyframes drawLine { to { stroke-dashoffset: 0; } }
+
+        .footer {
+            background: #080a0f;
+            padding: 80px 0 40px;
+            border-top: 1px solid var(--border-subtle);
+            text-align: center;
+        }
+
+        .cta-box {
+            max-width: 600px;
+            margin: 0 auto 60px;
+        }
+
+        .cta-box h2 { font-size: 2.2rem; font-weight: 800; margin-bottom: 20px; }
+        .cta-box p { color: var(--text-medium); margin-bottom: 30px; font-size: 1.1rem; }
+
+        .footer-bottom {
+            padding-top: 30px;
+            border-top: 1px solid var(--border-subtle);
+            color: var(--text-low);
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        @media (max-width: 1024px) {
+            .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 40px; }
+            .hero-content { display: flex; flex-direction: column; align-items: center; }
+            .hero-subtitle { margin: 0 auto 30px; }
+            .hero-visual { max-width: 400px; margin: 0 auto; }
+            
+            .problems-grid { grid-template-columns: repeat(2, 1fr); }
+            
+            .slide { grid-template-columns: 1fr; min-height: auto; }
+            .slide-content { padding: 40px; border-right: none; border-bottom: 1px solid var(--border-subtle); }
+            .carousel-controls { bottom: auto; top: 40px; right: 40px; left: auto; }
+            
+            .dashboard-container { grid-template-columns: 1fr; padding: 40px; gap: 40px; }
+        }
+
+        @media (max-width: 768px) {
+            .section-padding { padding: 70px 0; }
+            .hero { padding-top: 120px; padding-bottom: 60px; }
+            .hero-content h1 { font-size: 2.2rem; }
+            .hero-features { flex-direction: column; gap: 10px; align-items: center; }
+            .floating-stat { display: none; } /* Скрываем плавающие элементы на мобилках для чистоты */
+            
+            .problems-grid { grid-template-columns: 1fr; }
+            
+            .chart-svg { height: 200px; }
+            .footer-bottom { flex-direction: column; gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar" id="navbar">
+        <div class="container nav-content">
+            <a href="#" class="brand-logo">
+                <i class="fa-solid fa-layer-group"></i>
+                ФинОптика
+            </a>
+            
+            <div class="nav-links">
+                <a href="#problems" class="nav-link">Задачи</a>
+                <a href="#methodology" class="nav-link">Методология</a>
+                <a href="#result" class="nav-link">Результат</a>
+            </div>
+            
+            <div class="nav-links mobile-actions">
+                <a href="https://t.me/your_telegram" class="social-icon-btn tg" target="_blank" aria-label="Telegram">
+                    <i class="fa-brands fa-telegram-plane"></i>
+                </a>
+                <a href="https://wa.me/your_whatsapp" class="social-icon-btn wa" target="_blank" aria-label="WhatsApp">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </a>
+                <a href="#contact" class="btn btn-primary btn-sm" style="display: none;">Обсудить</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-bg-glow"></div>
+        <div class="container hero-grid">
+            
+            <div class="hero-content reveal-up">
+                <div class="tag">Финансовый консалтинг и 1С</div>
+                <h1>Оцифруем бизнес для <span>роста чистой прибыли</span></h1>
+                <p class="hero-subtitle">
+                    Разрабатываем архитектуру управленческого учета. Переводим хаос из Excel-таблиц в понятные интерактивные дашборды на базе 1С. Вы управляете бизнесом на основе точных цифр, а не интуиции.
+                </p>
+                
+                <div class="hero-features">
+                    <div class="feature-item"><i class="fa-solid fa-check"></i> Точный Cashflow</div>
+                    <div class="feature-item"><i class="fa-solid fa-check"></i> Рентабельность </div>
+                    <div class="feature-item"><i class="fa-solid fa-check"></i> Без рутины</div>
+                </div>
+                
+                <div class="hero-actions">
+                    <a href="#result" class="btn btn-primary">Посмотреть дашборд</a>
+                    <a href="#methodology" class="btn btn-outline">Как мы работаем</a>
+                </div>
+            </div>
+
+            <div class="hero-visual reveal-up" style="transition-delay: 0.2s;">
+                <div class="hero-image-box">
+                    <img src="https://i.yapx.ru/dz50N.png" alt="Эксперт по автоматизации">
+                </div>
+                
+                <!-- Плавающие элементы -->
+                <div class="floating-stat stat-1">
+                    <div class="stat-icon blue"><i class="fa-solid fa-chart-line"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-val">> 50</span>
+                        <span class="stat-desc">Внедренных систем</span>
+                    </div>
+                </div>
+                
+                <div class="floating-stat stat-2">
+                    <div class="stat-icon green"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-val">100%</span>
+                        <span class="stat-desc">Точность данных</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="problems" class="section-padding" style="background: var(--bg-surface);">
+        <div class="container">
+            <div class="section-header reveal-up">
+                <div class="tag">Анализ ситуации</div>
+                <h2 class="section-title">С какими задачами к нам приходят?</h2>
+                <p class="section-desc">Симптомы, которые говорят о том, что бизнесу срочно нужна системная автоматизация финансов.</p>
+            </div>
+            
+            <div class="problems-grid reveal-up" style="transition-delay: 0.2s;">
+                <div class="problem-card">
+                    <div class="problem-icon"><i class="fa-solid fa-file-excel"></i></div>
+                    <h3>Лоскутная автоматизация</h3>
+                    <p>Данные разбросаны по Excel, CRM и банку. Чтобы собрать итоговый P&L (отчет о прибылях), финансист тратит несколько дней на сведение таблиц вручную.</p>
+                </div>
+                
+                <div class="problem-card">
+                    <div class="problem-icon"><i class="fa-solid fa-money-bill-transfer"></i></div>
+                    <h3>Кассовые разрывы</h3>
+                    <p>На счетах есть деньги, но непонятно, сколько из них — свободная прибыль, а сколько — обязательства перед поставщиками и налоги. Платежный календарь не работает.</p>
+                </div>
+                
+                <div class="problem-card">
+                    <div class="problem-icon"><i class="fa-solid fa-eye-slash"></i></div>
+                    <h3>Управление вслепую</h3>
+                    <p>Собственник не знает точную маржинальность отдельных направлений или продуктов. Убыточные проекты могут годами финансироваться за счет прибыльных.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="methodology" class="section-padding methodology-section">
+        <div class="container">
+            <div class="section-header reveal-up">
+                <div class="tag">Архитектура</div>
+                <h2 class="section-title">Системный подход к внедрению</h2>
+            </div>
+            
+            <div class="carousel-wrapper reveal-up" style="transition-delay: 0.2s;">
+                <div class="carousel-track" id="carouselTrack">
+                    
+                    <!-- Слайд 1 -->
+                    <div class="slide">
+                        <div class="slide-content">
+                            <div class="slide-step">Этап 1 / Аудит и сборка</div>
+                            <h3>Централизация данных</h3>
+                            <p>Мы разрабатываем единую методологию учета. Настраиваем интеграции между 1С, банками и CRM. Исключаем ручной ввод и дублирование информации, создавая "единую версию правды".</p>
+                        </div>
+                        <div class="slide-visual">
+                            <div class="ui-mockup integration-nodes">
+                                <div class="node error"><span>Excel выгрузки</span> <i class="fa-solid fa-xmark"></i></div>
+                                <div class="node error"><span>Сводки в мессенджерах</span> <i class="fa-solid fa-xmark"></i></div>
+                                <div class="node success"><span>1С: ERP / Комплексная</span> <i class="fa-solid fa-check"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Слайд 2 -->
+                    <div class="slide">
+                        <div class="slide-content">
+                            <div class="slide-step">Этап 2 / Три главных отчета</div>
+                            <h3>Внедрение метрик</h3>
+                            <p>Настраиваем автоматическое формирование управленческого баланса, ОПиУ (прибыль и убытки) и ОДДС (движение денег). Разделяем операционную, инвестиционную и финансовую деятельность.</p>
+                        </div>
+                        <div class="slide-visual">
+                            <div class="ui-mockup mini-dashboard">
+                                <div class="metric-card">
+                                    <div class="metric-label">Выручка</div>
+                                    <div class="metric-val">24.5M ₽</div>
+                                </div>
+                                <div class="metric-card highlight">
+                                    <div class="metric-label">EBITDA</div>
+                                    <div class="metric-val" style="color: var(--brand-success)">4.2M ₽</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-label">Рентабельность</div>
+                                    <div class="metric-val">17.1%</div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-label">Кассовый остаток</div>
+                                    <div class="metric-val">8.4M ₽</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Слайд 3 -->
+                    <div class="slide">
+                        <div class="slide-content">
+                            <div class="slide-step">Этап 3 / Управление</div>
+                            <h3>Принятие решений</h3>
+                            <p>Вы получаете доступ к дашборду руководителя. Цифры обновляются ежедневно. Вы можете "провалиться" в любой показатель до первичного документа, чтобы найти причину отклонений.</p>
+                        </div>
+                        <div class="slide-visual">
+                            <div class="ui-mockup" style="text-align: center; padding: 40px 20px;">
+                                <i class="fa-solid fa-laptop-code" style="font-size: 3rem; color: var(--brand-primary); margin-bottom: 20px;"></i>
+                                <div style="font-weight: 600; font-size: 1.1rem;">Аналитика реального времени</div>
+                                <div style="color: var(--text-medium); font-size: 0.9rem; margin-top: 10px;">Доступ с любого устройства</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="carousel-controls">
+                    <button class="control-btn" id="btnPrev"><i class="fa-solid fa-arrow-left"></i></button>
+                    <button class="control-btn" id="btnNext"><i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="result" class="section-padding dashboard-demo-section">
+        <div class="container">
+            <div class="dashboard-container reveal-up">
+                
+                <div class="demo-info">
+                    <div class="tag" style="margin-bottom: 15px;">Результат</div>
+                    <h3>Прозрачность бизнеса в цифрах</h3>
+                    <p>Интерактивная демонстрация панели руководителя. После внедрения системы вы видите динамику ключевых показателей без задержек и ошибок человеческого фактора.</p>
+                    
+                    <div class="key-metrics">
+                        <div class="big-metric">
+                            <div class="bm-label">Чистая прибыль (YTD)</div>
+                            <div class="bm-value">
+                                <span id="counterProfit">0</span>
+                                <span class="bm-currency">₽</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-wrapper" id="chartTrigger">
+                    <div class="chart-header">
+                        <span>Динамика маржинальной прибыли</span>
+                        <span style="color: var(--brand-success);"><i class="fa-solid fa-arrow-trend-up"></i> +24%</span>
+                    </div>
+                    
+                    <svg class="chart-svg" viewBox="0 0 600 280" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="blueGradient" x1="0" x2="0" y1="0" y2="1">
+                                <stop offset="0%" stop-color="var(--brand-primary)" stop-opacity="0.3"/>
+                                <stop offset="100%" stop-color="var(--brand-primary)" stop-opacity="0"/>
+                            </linearGradient>
+                        </defs>
+                        
+                        <!-- Сетка -->
+                        <line x1="0" y1="240" x2="600" y2="240" class="grid-line" />
+                        <line x1="0" y1="180" x2="600" y2="180" class="grid-line" />
+                        <line x1="0" y1="120" x2="600" y2="120" class="grid-line" />
+                        <line x1="0" y1="60" x2="600" y2="60" class="grid-line" />
+                        
+                        <!-- Заливка (появляется с задержкой) -->
+                        <path d="M 0 240 L 0 200 C 150 180, 250 140, 350 100 C 450 60, 550 40, 600 30 L 600 240 Z" class="area-path" />
+                        
+                        <!-- Анимированная линия -->
+                        <path d="M 0 200 C 150 180, 250 140, 350 100 C 450 60, 550 40, 600 30" class="line-path" />
+                        
+                        <!-- Точки (появляются последовательно) -->
+                        <circle cx="150" cy="170" r="5" class="chart-point" />
+                        <circle cx="350" cy="100" r="5" class="chart-point" />
+                        <circle cx="450" cy="65" r="5" class="chart-point" />
+                        <circle cx="600" cy="30" r="6" class="chart-point" style="fill: var(--brand-primary); stroke: var(--bg-surface);" />
+                    </svg>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="cta-box reveal-up">
+                <h2>Обсудим вашу задачу?</h2>
+                <p>Напишите мне в удобный мессенджер. Я проведу краткий экспресс-аудит текущего состояния вашего учета и предложу варианты решения проблемы.</p>
+                
+                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                    <a href="https://t.me/your_telegram" class="btn btn-primary" target="_blank">
+                        <i class="fa-brands fa-telegram"></i> Написать в Telegram
+                    </a>
+                    <a href="https://wa.me/your_whatsapp" class="btn btn-outline" target="_blank">
+                        <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="brand-logo" style="font-size: 1.1rem; color: var(--text-medium);">
+                    <i class="fa-solid fa-layer-group"></i> ФинОптика
+                </div>
+                <div>&copy; 2026. Разработка архитектуры 1С и Управленческий учет.</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. Эффект скролла навигации ---
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // --- 2. Анимация появления элементов (Intersection Observer) ---
+        const revealElements = document.querySelectorAll('.reveal-up');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // --- 3. Логика Карусели ---
+        const track = document.getElementById('carouselTrack');
+        const btnPrev = document.getElementById('btnPrev');
+        const btnNext = document.getElementById('btnNext');
+        let currentSlide = 0;
+        const totalSlides = 3;
+
+        function moveCarousel() {
+            track.style.transform = `translateX(-${currentSlide * 33.3333}%)`;
+        }
+
+        btnNext.addEventListener('click', () => {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            moveCarousel();
+        });
+
+        btnPrev.addEventListener('click', () => {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            moveCarousel();
+        });
+
+        // --- 4. Анимация Финансового Дашборда ---
+        function animateValue(obj, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                // Функция ease-out
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                const current = Math.floor(easeOut * (end - start) + start);
+                
+                // Форматирование числа с пробелами
+                obj.innerHTML = current.toLocaleString('ru-RU');
+                
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        const chartTrigger = document.getElementById('chartTrigger');
+        const chartObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Запуск CSS анимации графика
+                    chartTrigger.classList.add('animate-draw');
+                    
+                    // Запуск JS анимации счетчика
+                    const profitCounter = document.getElementById('counterProfit');
+                    // Анимируем от 0 до 8 450 000 за 2.5 секунды
+                    animateValue(profitCounter, 0, 8450000, 2500);
+                    
+                    chartObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        chartObserver.observe(chartTrigger);
+    </script>
+</body>
+</html>
